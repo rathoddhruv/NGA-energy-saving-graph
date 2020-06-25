@@ -43,13 +43,26 @@ export class AppComponent implements OnInit {
     let chart = am4core.create("chartdiv_1", am4charts.XYChart);
     let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
     let consumptionAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    let demandAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    let weatherAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    // let demandAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    // let weatherAxis = chart.yAxes.push(new am4charts.ValueAxis());
     let consumptionSeries = chart.series.push(new am4charts.ColumnSeries());
 
-    let demandSeries = chart.series.push(new am4charts.LineSeries());
-    let weatherSeries = chart.series.push(new am4charts.LineSeries());
-    this.zone.runOutsideAngular(() => {});
+    // let demandSeries = chart.series.push(new am4charts.LineSeries());
+    // let weatherSeries = chart.series.push(new am4charts.LineSeries());
+    this.zone.runOutsideAngular(() => {
+      chart.cursor = new XYCursor();
+      chart.cursor.behavior = "selectXY";
+
+      chart.scrollbarX = new am4charts.XYChartScrollbar();
+chart.scrollbarX.series.push(consumptionAxis);
+
+
+      consumptionSeries.dataFields.valueY = "value";
+      consumptionSeries.dataFields.dateX = "time";
+
+      chart.data = this.generateChartData();
+      let a = this.generateChartData();
+    });
   }
 
   generateChartData() {
@@ -81,8 +94,8 @@ export class AppComponent implements OnInit {
       views += Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 10);
 
       chartData.push({
-        date: newDate,
-        value1: visits,
+        time: newDate,
+        value: visits,
         value2: visits,
         value3: visits
       });
