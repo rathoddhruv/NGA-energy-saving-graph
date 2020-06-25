@@ -2,6 +2,6 @@ p {
   font-family: Lato;
 }
 
-::ng-deep chartdiv_1 {
+::ng-deep #chartdiv_1 {
   height:500px !important;
 }
