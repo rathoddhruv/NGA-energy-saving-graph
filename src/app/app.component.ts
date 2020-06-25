@@ -23,7 +23,7 @@ import {
 } from "@angular/core";
 import { MouseCursorStyle } from "@amcharts/amcharts4/core";
 import { FormBuilder, FormGroup, FormArray, FormControl } from "@angular/forms";
-
+useTheme(am4themes_animated);
 @Component({
   selector: "my-app",
   templateUrl: "./app.component.html",
