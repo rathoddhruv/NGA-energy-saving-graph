@@ -81,7 +81,7 @@ export class AppComponent implements OnInit {
                 // consumptionState = consumptionSeries.columns.template.states.create(
                 //   "hidden"
                 // );
-                // consumptionSeries.columns.template.cursorOverStyle = MouseCursorStyle.default;
+                consumptionSeries.columns.template.cursorOverStyle = MouseCursorStyle.default;
 
                 
             
