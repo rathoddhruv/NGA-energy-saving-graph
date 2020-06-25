@@ -52,15 +52,17 @@ export class AppComponent implements OnInit {
     this.zone.runOutsideAngular(() => {
       chart.cursor = new XYCursor();
       chart.cursor.behavior = "selectXY";
-
+      // let consumptionState = consumptionSeries.columns.template.states.create(
+      //   "hover"
+      // );
       chart.scrollbarX = new am4charts.XYChartScrollbar();
       chart.scrollbarX.series.push(consumptionAxis);
-
+      // consumptionState.properties.fillOpacity = 0.9;
       consumptionSeries.dataFields.valueY = "value";
       consumptionSeries.dataFields.dateX = "time";
       consumptionSeries.columns.template.cursorOverStyle = MouseCursorStyle.pointer;
-
-      chart.data = this.generateChartData();
+      this.chart = chart;
+      this.chart.data = this.generateChartData();
     });
   }
 
@@ -102,10 +104,9 @@ export class AppComponent implements OnInit {
     return chartData;
   }
 
-
   ngOnDestroy() {
     this.zone.runOutsideAngular(() => {
-      console.log('graph disposed');
+      console.log("graph disposed");
       if (this.chart) {
         this.chart.dispose();
       }
