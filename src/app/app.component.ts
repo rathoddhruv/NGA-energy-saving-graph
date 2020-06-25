@@ -51,13 +51,14 @@ export class AppComponent implements OnInit {
     // let weatherSeries = chart.series.push(new am4charts.LineSeries());
     this.zone.runOutsideAngular(() => {
       chart.cursor = new XYCursor();
-      chart.cursor.behavior = "panX";
+      chart.cursor.behavior = "selectXY";
 
       chart.scrollbarX = new am4charts.XYChartScrollbar();
       chart.scrollbarX.series.push(consumptionAxis);
 
       consumptionSeries.dataFields.valueY = "value";
       consumptionSeries.dataFields.dateX = "time";
+      consumptionSeries.columns.template.cursorOverStyle = MouseCursorStyle.pointer;
 
       chart.data = this.generateChartData();
     });
