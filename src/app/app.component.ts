@@ -60,7 +60,7 @@ export class AppComponent implements OnInit {
       // consumptionState.properties.fillOpacity = 0.9;
       consumptionSeries.dataFields.valueY = "value";
       consumptionSeries.dataFields.dateX = "time";
-      consumptionSeries.columns.template.cursorOverStyle = MouseCursorStyle.pointer;
+      consumptionSeries.columns.template.cursorOverStyle = MouseCursorStyle.grab;
       this.chart = chart;
       this.chart.data = this.generateChartData();
     });
