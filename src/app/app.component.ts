@@ -147,11 +147,23 @@ chart.dateFormatter.dateFormat = {
 
             
       this.chart = chart;
-      this.chart.data = this.generateChartData();
+      this.chart.data = this.generateChartData(0);
+      weatherSeries.dataFields.valueY = "demand";
+      weatherSeries.dataFields.dateX = "time";
+      setTimeout(()=>{
+ (this.chart.series.values[2] as am4charts.LineSeries).data = this.generateChartData(1);
+      },200 );
+       (this.chart.xAxes.values[0] as am4charts.DateAxis).zoomToDates(
+        new Date().setMinutes(newDate.getMinutes() + 24),
+        new Date(item.controls['toDate'].value),
+        true,
+        true
+      );
+     
     });
   }
 
-  generateChartData() {
+  generateChartData(isWeather) {
     var chartData = [];
     var firstDate = new Date();
     firstDate.setDate(firstDate.getDate() - 100);
