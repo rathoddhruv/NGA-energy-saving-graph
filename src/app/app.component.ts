@@ -23,6 +23,7 @@ import {
 } from "@angular/core";
 import { MouseCursorStyle } from "@amcharts/amcharts4/core";
 import { FormBuilder, FormGroup, FormArray, FormControl } from "@angular/forms";
+import { startOfDay, endOfDay } from "date-fns";
 useTheme(am4themes_animated);
 @Component({
   selector: "my-app",
@@ -54,6 +55,8 @@ export class AppComponent implements OnInit {
       chart.dateFormatter.utc = true;
             chart.dateFormatter.inputDateFormat = "i";
       chart.cursor = new XYCursor();
+      chart.cursor.behavior = "panX";
+
       chart.cursor.behavior = "selectXY";
       // let consumptionState = consumptionSeries.columns.template.states.create(
       //   "hover"
@@ -136,12 +139,12 @@ chart.dateFormatter.dateFormat = {
               // chart.cursorOverStyle = am4core.MouseCursorStyle.default;
             });
 
-            // am4core.getInteraction().body.events.on("down", (ev) => {
-            //   console.log("keyboard key DOWN");
-            //   // this.chartDiv1.nativeElement.style = `cursor: url("data:image/svg+xml,%3Csvg width='13px' height='13px' viewBox='0 0 13 13' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Ctitle%3Eato/graph cursor%3C/title%3E%3Cg id='ato/graph-cursor' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cpath d='M7,-5.24025268e-14 L7,5.999 L13,6 L13,7 L7,6.999 L7,13 L6,13 L6,6.999 L0,7 L0,6 L6,5.999 L6,-5.24025268e-14 L7,-5.24025268e-14 Z' id='Combined-Shape' fill='%23000000' fill-rule='nonzero'%3E%3C/path%3E%3C/g%3E%3C/svg%3E"), pointer !important`;
+            am4core.getInteraction().body.events.on("keydown", (ev) => {
+              console.log("keyboard key DOWN");
+              this.chartDiv1.nativeElement.style = `cursor: url("data:image/svg+xml,%3Csvg width='13px' height='13px' viewBox='0 0 13 13' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Ctitle%3Eato/graph cursor%3C/title%3E%3Cg id='ato/graph-cursor' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cpath d='M7,-5.24025268e-14 L7,5.999 L13,6 L13,7 L7,6.999 L7,13 L6,13 L6,6.999 L0,7 L0,6 L6,5.999 L6,-5.24025268e-14 L7,-5.24025268e-14 Z' id='Combined-Shape' fill='%23000000' fill-rule='nonzero'%3E%3C/path%3E%3C/g%3E%3C/svg%3E"), pointer !important`;
 
-            //   // chart.cursorOverStyle = am4core.MouseCursorStyle.default;
-            // });
+              chart.cursorOverStyle = am4core.MouseCursorStyle.default;
+            });
 
 
 
@@ -154,11 +157,39 @@ chart.dateFormatter.dateFormat = {
  (this.chart.series.values[2] as am4charts.LineSeries).data = this.generateChartData(1);
       },200 );
        (this.chart.xAxes.values[0] as am4charts.DateAxis).zoomToDates(
-        new Date().setMinutes(newDate.getMinutes() + 24),
-        new Date(item.controls['toDate'].value),
+        startOfDay(new Date()) ,
+        endOfDay(new Date()),
         true,
         true
       );
+
+        chart.events.on("ready", () => {
+           (this.chart.xAxes.values[0] as am4charts.DateAxis).zoomToDates(
+        startOfDay(new Date()) ,
+        endOfDay(new Date()),
+        true,
+        true
+        );
+        })
+this.chart.events.on("datavalidated", (ev) => {
+      // Create a range
+      console.log('datavalidated () => zoomToDates selected');
+      setTimeout(() => {
+        (this.chart.xAxes.values[0] as am4charts.DateAxis).zoomToDates(
+        startOfDay(new Date()) ,
+        endOfDay(new Date()),
+        true,
+        true
+        );
+
+      }, 50);
+
+
+    });
+
+
+
+      
      
     });
   }
@@ -174,7 +205,7 @@ chart.dateFormatter.dateFormat = {
     var temperature = 1600;
 
     let step = 0;
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < 40; i++) {
       // we create date objects here. In your data, you can have date strings
       // and then set format of your dates using chart.dataDateFormat property,
       // however when possible, use date objects, as this will speed up chart rendering.
