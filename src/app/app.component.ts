@@ -63,7 +63,20 @@ export class AppComponent implements OnInit {
       consumptionSeries.columns.template.cursorOverStyle = MouseCursorStyle.grabbing;
 
 
-
+chart.dateFormatter.dateFormat = {
+              "year": "numeric",
+              "month": "numeric",
+              "day": "numeric",
+              "hour": "numeric",
+              "minute": "numeric",
+              "timeZone": "America/Chicago"
+            };
+            dateAxis.dateFormats.setKey("hour", { "hour": "numeric", "minute": "numeric", "timeZone": "America/Chicago" });
+            dateAxis.dateFormats.setKey("minute", { "hour": "numeric", "minute": "numeric", "timeZone": "America/Chicago" });
+            dateAxis.dateFormats.setKey("second", { "hour": "numeric", "minute": "numeric", "timeZone": "America/Chicago" });
+            dateAxis.periodChangeDateFormats.setKey("hour", { "hour": "numeric", "minute": "numeric", "timeZone": "America/Chicago" });
+            dateAxis.periodChangeDateFormats.setKey("minute", { "hour": "numeric", "minute": "numeric", "timeZone": "America/Chicago" });
+            dateAxis.periodChangeDateFormats.setKey("second", { "hour": "numeric", "minute": "numeric", "timeZone": "America/Chicago" });
 
 
         am4core.getInteraction().body.events.on("keydown", (ev) => {
