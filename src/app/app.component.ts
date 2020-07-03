@@ -43,13 +43,16 @@ export class AppComponent implements OnInit {
     let chart = am4core.create("chartdiv_1", am4charts.XYChart);
     let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
     let consumptionAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    // let demandAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    // let weatherAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    let demandAxis = chart.yAxes.push(new am4charts.ValueAxis());
+      demandAxis.renderer.opposite = true;
+    let weatherAxis = chart.yAxes.push(new am4charts.ValueAxis());
     let consumptionSeries = chart.series.push(new am4charts.ColumnSeries());
 
-    // let demandSeries = chart.series.push(new am4charts.LineSeries());
-    // let weatherSeries = chart.series.push(new am4charts.LineSeries());
+    let demandSeries = chart.series.push(new am4charts.LineSeries());
+    let weatherSeries = chart.series.push(new am4charts.LineSeries());
     this.zone.runOutsideAngular(() => {
+      chart.dateFormatter.utc = true;
+            chart.dateFormatter.inputDateFormat = "i";
       chart.cursor = new XYCursor();
       chart.cursor.behavior = "selectXY";
       // let consumptionState = consumptionSeries.columns.template.states.create(
@@ -58,7 +61,15 @@ export class AppComponent implements OnInit {
       chart.scrollbarX = new am4charts.XYChartScrollbar();
       chart.scrollbarX.series.push(consumptionAxis);
       // consumptionState.properties.fillOpacity = 0.9;
-      consumptionSeries.dataFields.valueY = "value";
+      demandSeries.dataFields.valueY = "demand";
+      demandSeries.dataFields.dateX = "time";
+      dateAxis.renderer.minGridDistance = 80;
+
+
+       let consumptionState = consumptionSeries.columns.template.states.create(
+              "hover"
+            );
+      consumptionSeries.dataFields.valueY = "consumption";
       consumptionSeries.dataFields.dateX = "time";
       consumptionSeries.columns.template.cursorOverStyle = MouseCursorStyle.grabbing;
 
@@ -146,12 +157,12 @@ chart.dateFormatter.dateFormat = {
     firstDate.setDate(firstDate.getDate() - 100);
     firstDate.setHours(0, 0, 0, 0);
 
-    var visits = 1600;
-    var hits = 2900;
-    var views = 8700;
+    var consumption = 1600;
+    var demand = 1600;
+    var temperature = 1600;
 
     let step = 0;
-    for (var i = 0; i < 400; i++) {
+    for (var i = 0; i < 4; i++) {
       // we create date objects here. In your data, you can have date strings
       // and then set format of your dates using chart.dataDateFormat property,
       // however when possible, use date objects, as this will speed up chart rendering.
@@ -164,15 +175,15 @@ chart.dateFormatter.dateFormat = {
         step = step + 5;
       }
 
-      visits += Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 10);
-      hits += Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 10);
-      views += Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 10);
+      consumption += Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 10);
+      demand += Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 10);
+      temperature += Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 10);
 
       chartData.push({
-        time: newDate,
-        value: visits,
-        value2: visits,
-        value3: visits
+        time: newDate.toUTCString(),
+        consumption: consumption,
+        demand: demand,
+        temperature: temperature
       });
     }
     return chartData;
